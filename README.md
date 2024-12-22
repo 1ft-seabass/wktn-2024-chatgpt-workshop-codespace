@@ -1,1 +1,1 @@
-# wktn-2024-chatgpt-workshop-codespace
+# hack-rock-fes-2023-chatgpt-workshop-codespace
