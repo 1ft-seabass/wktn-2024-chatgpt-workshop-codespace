@@ -15,14 +15,15 @@ const openai = new OpenAI({
 async function main() {
 
   // 質問内容
-  const questionText = `赤`;
+  const questionText = `ライトをつけて`;
 
   // 実際に ChatGPT にお願いするテキスト
   // テンプレートリテラルのバッククォート「`」を使っているので複数行できる
   const promptText = `
-今回は「${questionText}」という色名がRGB値で返答ください。
-色名がRGB値で認識されたら rgb_json を使います。
-色名がRGB値で認識されない場合は rgb_json_not_found を使います。
+- 「ライトをつけて」とお願いしたら on_command を使います
+- 「ライトを消して」とお願いしたら off_command を使います
+
+今回のお願いは「${questionText}」です。
 `;
 
   console.log("実際に ChatGPT にお願いするテキスト");
@@ -31,73 +32,39 @@ async function main() {
   // Function calling の設定
   const functions = [
     {
-        "name": "rgb_json",
-        "description": "色名から RGB 値の情報を得られた場合",
+        "name": "on_command",
+        "description": "「ライトをつけて」とお願いしたときに使います。",
         "parameters": {
             "type": "object",
             "properties": {
-                "type": {
+                "command": {
                     "type": "string",
-                    "description": "led という値が固定値を入力されます"
-                },
-                "result": {
-                    "type": "boolean",
-                    "description": "色名が RGB値 で認識されたので true は認識が入ります。"
-                },
-                "r": {
-                    "type": "number",
-                    "description": "色名から RGB 値の情報を得たときの R 値"
-                },
-                "g": {
-                    "type": "number",
-                    "description": "色名から RGB 値の情報を得たときの G 値"
-                },
-                "b": {
-                    "type": "number",
-                    "description": "色名から RGB 値の情報を得たときの B 値"
-                },
-                "message": {
-                    "type": "string",
-                    "description": "色名がRGB値に認識されたときの追加の説明。"
+                    "description": "on が固定値で入ります"
                 }
             },
             "required": [
-                "type",
-                "result",
-                "r",
-                "g",
-                "b",
-                "message"
+                "command"
             ]
         }
     },
     {
-        "name": "rgb_json_not_found",
-        "description": "色名から RGB 値の情報を得られなかった場合",
+        "name": "off_command",
+        "description": "「ライトを消して」とお願いしたときに使います。",
         "parameters": {
             "type": "object",
             "properties": {
-                "type": {
+                "command": {
                     "type": "string",
-                    "description": "led という値が固定値を入力されます"
-                },
-                "result": {
-                    "type": "boolean",
-                    "description": "色名が RGB値 で認識されなかったので false が入ります。"
-                },
-                "message": {
-                    "type": "string",
-                    "description": "色名が RGB 値に認識されなかったときの説明。あるいは、色名がRGB値に認識されなかったときの説明。色名の例外は「色名が認識されない例外処理です」と説明します。"
+                    "description": "off が固定値で入ります"
                 }
             },
             "required": [
-                "type",
-                "result",
-                "message"
+                "command"
             ]
         }
     }
-];
+  ];
+
 
   // ChatGPT API に実際にアクセス
   // 基本仕様 : https://platform.openai.com/docs/guides/text-generation
