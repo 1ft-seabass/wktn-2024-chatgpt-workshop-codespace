@@ -15,12 +15,12 @@ const openai = new OpenAI({
 async function main() {
 
   // ChatGPT API に実際にアクセス
-  // https://platform.openai.com/docs/guides/gpt/chat-completions-api?lang=node.js
+  // 基本仕様 : https://platform.openai.com/docs/guides/text-generation
   const completion = await openai.chat.completions.create({
     messages: [
       { role: "user", content: "こんにちは!ChatGPTさん!" }  // ユーザーから「こんにちは!ChatGPTさん!」の質問
     ],
-    model: "gpt-3.5-turbo", // モデルは gpt-3.5-turbo を今回使う。
+    model: "gpt-4o", // モデルは gpt-4o を今回使う。
   });
 
   // 結果表示

@@ -15,7 +15,7 @@ const openai = new OpenAI({
 async function main() {
 
   // 質問内容
-  const questionText = `赤でお願いします。`;
+  const questionText = `赤`;
 
   // 実際に ChatGPT にお願いするテキスト
   // テンプレートリテラルのバッククォート「`」を使っているので複数行できる
@@ -100,15 +100,15 @@ async function main() {
 ];
 
   // ChatGPT API に実際にアクセス
-  // https://platform.openai.com/docs/guides/gpt/chat-completions-api?lang=node.js
-  // https://platform.openai.com/docs/guides/gpt/function-calling
+  // 基本仕様 : https://platform.openai.com/docs/guides/text-generation
+  // function calling : https://platform.openai.com/docs/guides/function-calling
   const completion = await openai.chat.completions.create({
     messages: [
       // 質問内容
       { role: "user", content: promptText }
     ],
-    // Function calling を使うためにモデルは gpt-3.5-turbo-0613 を使います。
-    model: "gpt-3.5-turbo-0613",
+    // Function calling
+    model: "gpt-4o",
     functions:functions,
     function_call: "auto"
   });
